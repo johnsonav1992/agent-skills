@@ -1,0 +1,3 @@
+[submodule "clean-code/ub-mode"]
+	path = clean-code/ub-mode
+	url = https://github.com/unclebob/ub-mode.git
