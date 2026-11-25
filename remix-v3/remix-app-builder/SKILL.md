@@ -45,12 +45,12 @@ app/
 │       ├── types/
 │       └── utils/
 ├── middleware/        # request middleware (auth, session, logging, database.ts puts the db on context)
-├── data/              # backend only: db.ts (connection), tables, relations, queries, mutations
+├── data/              # backend only: tables, relations, queries, mutations
 ├── types/             # types shared across areas
 ├── utils/             # helpers shared across areas
 ├── ui/                # shared components, icons/, public/ islands
 └── theme/
-db/                    # migrations/ and seed.sql (Remix CLI defaults for `remix db`)
+db/                    # connection.ts, migrations/ and seed.sql (Remix CLI defaults for `remix db`)
 linting/               # custom lint plugin and rules
 test/fixtures/         # shared test fixtures
 ```
