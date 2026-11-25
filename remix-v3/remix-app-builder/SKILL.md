@@ -44,8 +44,8 @@ app/
 │       ├── public/            # islands and browser scripts only this area uses
 │       ├── types/
 │       └── utils/
-├── middleware/        # request middleware (auth, session, database, logging)
-├── data/              # backend only: tables, relations, queries, mutations
+├── middleware/        # request middleware (auth, session, logging, database.ts puts the db on context)
+├── data/              # backend only: db.ts (connection), tables, relations, queries, mutations
 ├── types/             # types shared across areas
 ├── utils/             # helpers shared across areas
 ├── ui/                # shared components, icons/, public/ islands
