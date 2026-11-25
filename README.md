@@ -4,7 +4,7 @@ Skills I use with coding agents (Claude Code and others), grouped by what they'r
 
 | Folder | Skill | What it does |
 | --- | --- | --- |
-| `remix-v3/app` | `app` | Conventions for building Remix v3 apps: styling, components, pages, loading states and folder structure. |
+| `remix-v3/remix-app-builder` | `remix-app-builder` | Conventions for building Remix v3 apps: styling, components, pages, loading states and folder structure. |
 | `clean-code/ub-mode` | `ub-mode` | Uncle Bob's "make it work, make it right, follow practice" principles. Third-party, see below. |
 
 ## Using a skill

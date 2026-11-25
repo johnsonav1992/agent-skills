@@ -1,5 +1,5 @@
 ---
-name: app
+name: remix-app-builder
 description: The code conventions this app must follow. Use whenever writing or changing app code.
 ---
 
