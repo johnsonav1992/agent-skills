@@ -3,52 +3,63 @@ name: remix-app-builder
 description: The code conventions this app must follow. Use whenever writing or changing app code.
 ---
 
-## Style
+## Code style
 
-- Style with the theme; add repeated values to it. Small one-off spacing is fine.
-- Inline `css()` in the `mix` prop unless large or reused. Size in `rem` unless another unit is needed.
-- No comments except JSDoc on utils that need it. No barrel `index` files.
-- Lint and format occasionally, not after every change.
+- Style with the theme. Add repeated values to the theme; small one-off spacing is fine.
+- The theme should never get bloated and only contain values that are the core of the app's styling and design patterns
+- Inline `css()` in the JSX `mix` prop unless it is large or reused.
+- Size in `rem` unless `px` or another unit is truly needed.
+- No comments ever, except JSDoc on utils that need it.
+- No barrel `index` files, ever.
 
 ## Components
 
-- One component per PascalCase folder (`app/ui/Name/Name.tsx`), with its props type declared above it and passed to `Handle<>`. Nothing else goes in the file: utils, constants, label builders and style helpers get their own modules.
-- Split into focused pieces when it reads better; don't extract trivial fragments.
-- Icons go in `app/ui/icons/<Name>Icon/`, never as inline SVG in other components.
-- Reuse existing UI. Build missing shared components to library quality: composable, accessible, keyboard-friendly, themed, tested and documented, with sensible states.
-- Use `app/ui/public/Select` for every select and `app/ui/public/Button` for common actions. Controls with other semantics (checkboxes, combobox triggers) stay native.
+- Each component lives in its own PascalCase folder: `.../Name/Name.tsx`.
+- Put props in a named type above the component and pass it to `Handle<>`.
+- A component file holds only the component and its props types. Simple display text stays in JSX; utils, constants, label builders and style helpers go in separate modules.
+- Split components into focused pieces when that reads better, but don't extract trivial fragments.
+- Standalone icons go in `app/ui/icons/<Name>Icon/`. Don't put inline SVG in other components.
+- Always reach for a UI component from the ui library first when building. When a shared component is missing and justified, build it to library quality: composable API, accessible, keyboard support, sensible states, themed, tested and documented.
+
 
 ## Pages and loading
 
-- Each page is its own component inside the shared `AppLayout` (the home page is only the home page). Shared page pieces go in reusable UI.
-- Loading regions use a layout-matched `<Name>Skeleton` (from `app/ui/Skeleton`) as the `<Frame fallback>`; pending submits may use `app/ui/Spinner`. Both respect `prefers-reduced-motion`.
-- A region that reloads after a mutation is a `<Frame>` with its own GET route, targeted by its forms via `data-rmx-target`. Its actions return the region's HTML for frame requests (`X-Remix-Frame: true`) and a 303 redirect otherwise.
+- Every page is its own page component, wrapped by a shared layout (`AppLayout`). The home page is only the home page. Shared page pieces live in reusable UI.
+- Use proper loaders, either spinners or skeletons. Skeletons are preferred for layout-based and spinners for buttons.
+- Prefer using `Frame` components for parts of the UI that must reload separately based on user actions after the initial page has loaded
 
 ## Structure
 
 ```txt
 app/
-├── routes.ts              # one nested route map per area
-├── router.ts              # middleware + router.map(routes.<area>, <area>Controller)
+├── routes.ts          # one nested route map per area
+├── router.ts          # middleware + router.map(routes.<area>, <area>Controller)
 ├── actions/
-│   ├── controller.tsx     # root: assets route only
-│   ├── controller.test.ts # router test for every route and page
-│   ├── public/entry.ts    # browser entry
-│   └── <area>/            # kebab-case, named after the route area
+│   ├── controller.tsx         # root: assets route only
+│   ├── controller.test.ts     # router test covering every route and page
+│   ├── public/                # browser entry.ts + app-wide browser scripts
+│   └── <area>/                # kebab-case, named after the route area
 │       ├── controller.tsx
-│       ├── handlers/      # optional
+│       ├── handlers/
 │       ├── components/<Name>Page/<Name>Page.tsx
+│       ├── public/            # islands and browser scripts only this area uses
 │       ├── types/
 │       └── utils/
-├── data/                  # backend only: tables, queries, mutations (no copy, labels or UI types)
-├── types/                 # shared across areas
-├── utils/                 # shared across areas
-├── ui/                    # shared components, icons/, public/ islands
+├── middleware/        # request middleware (auth, session, database, logging)
+├── data/              # backend only: tables, relations, queries, mutations
+├── types/             # types shared across areas
+├── utils/             # helpers shared across areas
+├── ui/                # shared components, icons/, public/ islands
 └── theme/
+db/                    # migrations/ and seed.sql
+linting/               # custom lint plugin and rules
+test/fixtures/         # shared test fixtures
 ```
 
-- New area: nested map in `routes.ts`, one controller, one `router.map` line.
-- Distinct mutations get distinct methods and paths. Use `methodOverride()` after `formData()` for PUT, PATCH or DELETE from native forms.
-- Keep code in its area's `utils/` or `types/` until another area needs it.
-- Keep simple copy in JSX; extract it only when shared or logic-bearing.
-- No empty folders or `.gitkeep` files. Tests sit beside their module; shared fixtures go in `test/fixtures/`.
+- A new area needs a nested map in `routes.ts`, one controller, and a `router.map` line in `router.ts`.
+- Give distinct form mutations distinct methods and paths. Use `methodOverride()` after `formData()` for PUT, PATCH or DELETE from native forms.
+- Code used by one area stays in its local `utils/` or `types/`. Move it to `app/utils/` or `app/types/` only when something else needs it.
+- `app/data/` has no copy, labels, formatters or UI types.
+- Keep simple copy in the JSX. Extract it only when it's shared or has logic.
+- No empty folders and no `.gitkeep` files.
+- Tests sit beside the module they test. Shared fixtures go in `test/fixtures/`.
