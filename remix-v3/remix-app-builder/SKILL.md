@@ -37,10 +37,9 @@ app/
 ├── actions/
 │   ├── controller.tsx         # root: assets route only
 │   ├── controller.test.ts     # router test covering every route and page
-│   ├── public/                # browser entry.ts + app-wide browser scripts
+│   ├── public/                # browser-reachable: entry.ts + app-wide browser scripts
 │   └── <area>/                # kebab-case, named after the route area
 │       ├── controller.tsx
-│       ├── handlers/
 │       ├── components/<Name>Page/<Name>Page.tsx
 │       ├── public/            # islands and browser scripts only this area uses
 │       ├── types/
@@ -51,7 +50,7 @@ app/
 ├── utils/             # helpers shared across areas
 ├── ui/                # shared components, icons/, public/ islands
 └── theme/
-db/                    # migrations/ and seed.sql
+db/                    # migrations/ and seed.sql (Remix CLI defaults for `remix db`)
 linting/               # custom lint plugin and rules
 test/fixtures/         # shared test fixtures
 ```
