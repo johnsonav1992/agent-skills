@@ -15,6 +15,8 @@ description: The code conventions this app must follow. Use whenever writing or 
 ## Components
 
 - Each component lives in its own PascalCase folder: `.../Name/Name.tsx`.
+- Inside a component folder, only the component, its props type and its tests sit at the root. Everything else goes in subfolders: `utils/` for logic, `types/` for shared types, `styles/` for `css()` helpers. Each test sits beside the module it tests, and fixtures go in `test/fixtures/`.
+- A subcomponent used by exactly one parent lives in a child folder of that parent (`DataTable/DataTableHead/DataTableHeaderCell/`), never as a sibling at the top level. If it needs browser JS, it goes under the parent's own `public/` (`Parent/public/Child/`). Once two or more components use it, it moves up to the shared level. Standalone library pieces (Spinner, Checkbox, Link) stay at the top level even if only one component uses them today.
 - Put props in a named type above the component and pass it to `Handle<>`.
 - A component file holds only the component and its props types. Simple display text stays in JSX; utils, constants, label builders and style helpers go in separate modules.
 - Split components into focused pieces when that reads better, but don't extract trivial fragments.
